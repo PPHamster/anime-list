@@ -10,7 +10,7 @@ import WaifuForm from '../../components/content/WaifuForm';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
 
-const newPage = () => {
+const NewPage = () => {
 
     /* Set useRouter for change page */
     const router = useRouter();
@@ -211,4 +211,4 @@ const newPage = () => {
     );
 }
 
-export default newPage;
+export default NewPage;

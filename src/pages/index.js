@@ -9,7 +9,7 @@ import SearchText from '../components/home/SearchText';
 import NavBar from '../components/NavBar';
 import styles from '../styles/basic.module.css';
 
-const index = (props) => {
+const IndexPage = (props) => {
 
     /* Set Use State Variable */
     const [searchText, setSearchText] = useState('');
@@ -83,4 +83,4 @@ export async function getServerSideProps() {
     return { props: { allAnimeJson } };
 }
 
-export default index;
+export default IndexPage;

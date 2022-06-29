@@ -14,7 +14,7 @@ import { useState } from 'react';
 import UpdateSeason from '../../components/content/UpdateSeason';
 import CreateSeason from '../../components/content/CreateSeason';
 
-const animeId = (props) => {
+const AnimeId = (props) => {
     /* Object anime in props */
     const success = props.success;
     const anime = JSON.parse(props.anime);
@@ -158,4 +158,4 @@ export async function getServerSideProps(context) {
     return { props: { anime, seasons, waifu, success } };
 }
 
-export default animeId;
+export default AnimeId;
