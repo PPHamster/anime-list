@@ -59,4 +59,5 @@ const NumberInputSeason = React.forwardRef((props, ref) => {
     );
 });
 
+NumberInputSeason.displayName = 'NumberInputSeason';
 export default NumberInputSeason;

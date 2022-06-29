@@ -58,4 +58,5 @@ const ImageFile = React.forwardRef((props, ref) => {
     );
 });
 
+ImageFile.displayName = 'ImageFile';
 export default ImageFile;

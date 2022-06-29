@@ -34,4 +34,5 @@ const TextInputSeason = React.forwardRef((props, ref) => {
     );
 });
 
+TextInputSeason.displayName = 'TextInputSeason';
 export default TextInputSeason;

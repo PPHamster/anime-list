@@ -27,4 +27,5 @@ const SelectOption = React.forwardRef((props, ref) => {
     );
 });
 
+SelectOption.displayName = 'SelectOption';
 export default SelectOption;

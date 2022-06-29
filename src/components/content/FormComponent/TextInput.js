@@ -20,4 +20,5 @@ const TextInput = React.forwardRef((props, ref) => {
     );
 });
 
+TextInput.displayName = 'TextInput';
 export default TextInput;
