@@ -1,0 +1,28 @@
+.label {
+    display: block;
+    margin-bottom: 4px;
+    line-height: 1.6;
+}
+
+.box {
+    margin-bottom: 20px;
+}
+
+.input {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid #888888;
+    border-radius: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    display: block;
+    width: 100%;
+    padding: 4px 12px;
+    outline: none;
+    resize: none;
+}
+
+.input:focus {
+    border-color: #08AEA4;
+}

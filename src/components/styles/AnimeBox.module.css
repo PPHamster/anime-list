@@ -1,0 +1,26 @@
+.box {
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 100ms ease-out;
+    cursor: pointer;
+}
+
+.box:hover {
+    box-shadow: 0px 0px 15px 3px #08AEA4;
+    transform: scale(1.05);
+}
+
+.row {
+    display: block;
+}
+
+.title {
+    font-weight: 600;
+}
+
+.gray {
+    color: #979797;
+}

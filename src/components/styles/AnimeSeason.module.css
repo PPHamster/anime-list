@@ -1,0 +1,41 @@
+.box {
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    cursor: default;
+}
+
+.row {
+    display: block;
+}
+
+.title {
+    font-weight: 600;
+}
+
+.rightBox {
+    float: right;
+    display: none;
+    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.box:hover .rightBox {
+    display: flex;
+}
+
+.rightItem {
+    transition: all 200ms ease-out;
+    color: #aaaaaa;
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.rightItem:hover {
+    color: black;
+}
