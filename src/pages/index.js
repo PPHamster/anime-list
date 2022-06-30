@@ -16,6 +16,7 @@ const IndexPage = (props) => {
     const [searchText, setSearchText] = useState('');
     const [titleNow, setTitleNow] = useState(0);
     const [watchingFilter, setWatchingFilter] = useState(false);
+    const [sortLatest, setSortLatest] = useState(false);
 
     /* Option in title select */
     const optionTitle = [
@@ -28,8 +29,9 @@ const IndexPage = (props) => {
     const { allAnimeJson } = props;
     const allAnime = JSON.parse(allAnimeJson);
 
-    /* Anime in search */
+    /* All anime that show on screen */
     const animeElement = allAnime.filter((anime) => {
+        /* Anime in search text */
         const animeInSearchText = anime.title_jp.toLowerCase().includes(searchText.toLowerCase())
             || anime.title_en.toLowerCase().includes(searchText.toLowerCase())
             || anime.title_th.toLowerCase().includes(searchText.toLowerCase());
@@ -37,7 +39,14 @@ const IndexPage = (props) => {
             return animeInSearchText && anime.is_watching;
         }
         return animeInSearchText;
+    }).sort((anime2, anime1) => {
+        /* Sort by created latest date */
+        if (sortLatest) {
+            return new Date(anime1.created_at) - new Date(anime2.created_at);
+        }
+        return new Date(anime2.created_at) - new Date(anime1.created_at);
     }).map((anime) => {
+        /* Convert anime into AnimeBox */
         return <AnimeBox key={anime.id} anime={anime} titleNow={titleNow} />;
     });
 
@@ -50,7 +59,8 @@ const IndexPage = (props) => {
                     <div className={styles.container}>
                         <div className={styles.settingBox}>
                             <SelectOption title="ชื่อเรื่อง" id="title" name="title" optionValue={optionTitle} onValueChange={setTitleNow} defaultValue={titleNow} />
-                            <CheckBox title="กำลังดู" id="watching" name="watching" onCheckedChange={setWatchingFilter} small={true} />
+                            <CheckBox title="เรียงจากวันที่ลงล่าสุด" id="sortdate" name="sortdate" onCheckedChange={setSortLatest} small={true} />
+                            <CheckBox title="อนิเมะที่กำลังดู" id="watching" name="watching" onCheckedChange={setWatchingFilter} small={true} />
                         </div>
                         <SearchText value={searchText} onValueChange={setSearchText} />
                         {animeElement}
