@@ -8,6 +8,7 @@ import AnimeBox from '../components/home/AnimeBox';
 import SearchText from '../components/home/SearchText';
 import NavBar from '../components/NavBar';
 import styles from '../styles/basic.module.css';
+import ScrollTopButton from '../components/ScrollTopButton';
 
 const IndexPage = (props) => {
 
@@ -55,6 +56,7 @@ const IndexPage = (props) => {
                         {animeElement}
                     </div>
                 </section>
+                <ScrollTopButton />
             </div>
             <Footer />
         </>

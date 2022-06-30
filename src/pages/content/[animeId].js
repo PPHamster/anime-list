@@ -13,6 +13,7 @@ import 'dayjs/locale/th';
 import { useState } from 'react';
 import UpdateSeason from '../../components/content/UpdateSeason';
 import CreateSeason from '../../components/content/CreateSeason';
+import ScrollTopButton from '../../components/ScrollTopButton';
 
 const AnimeId = (props) => {
     /* Object anime in props */
@@ -116,6 +117,7 @@ const AnimeId = (props) => {
                         {contentElement}
                     </div>
                 </section>
+                <ScrollTopButton />
             </div>
             <Footer />
         </>
