@@ -13,7 +13,7 @@ const TextInput = React.forwardRef((props, ref) => {
                 name={name}
                 defaultValue={value}
                 className={styles.input}
-                maxLength={50}
+                maxLength={100}
                 ref={ref}
             />
         </div>

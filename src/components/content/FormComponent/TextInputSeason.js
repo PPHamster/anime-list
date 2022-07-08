@@ -27,7 +27,7 @@ const TextInputSeason = React.forwardRef((props, ref) => {
                 id={id}
                 name={name}
                 className={styles.input}
-                maxLength={50}
+                maxLength={100}
                 ref={addToRefs}
             />
         </div>
