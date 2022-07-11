@@ -1,6 +1,6 @@
 import styles from '../styles/AnimeBox.module.css';
 import Link from 'next/link';
-const dayjs = require('dayjs');
+import dayjs from 'dayjs';
 import 'dayjs/locale/th';
 
 const AnimeBox = (props) => {
