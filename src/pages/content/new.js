@@ -202,7 +202,7 @@ const NewPage = () => {
                         <hr className={styles.line} />
                         <h2 className={styles.title}>เพิ่ม Waifu</h2>
                         <WaifuForm objectRef={objectWaifuRef} />
-                        <button className={`${styles.button} ${styles.longButton}`} onClick={onSubmitButtonClick}>Submit</button>
+                        <button className={`${styles.button} ${styles.longButton}`} onClick={onSubmitButtonClick}>ยืนยัน</button>
                     </div>
                 </section>
             </div>
