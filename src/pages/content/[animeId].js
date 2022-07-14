@@ -84,8 +84,8 @@ const AnimeId = (props) => {
                 <AnimeWaifu waifu={waifu} animeId={anime.id} />
                 <hr className={styles.line} />
                 {/* Created date and last update */}
-                <p><span className={styles.topic}>{`วันที่ลง : `}</span>{dayjs(anime.created_at).locale('th').format('D MMMM YYYY - H:mm')}</p>
-                <p><span className={styles.topic}>{`อัพเดทล่าสุด : `}</span>{dayjs(anime.last_update).locale('th').format('D MMMM YYYY - H:mm')}</p>
+                <p><span className={styles.topic}>{`วันที่ลง : `}</span>{dayjs(anime.created_at).tz('Asia/Bangkok').locale('th').format('D MMMM YYYY - H:mm')}</p>
+                <p><span className={styles.topic}>{`อัพเดทล่าสุด : `}</span>{dayjs(anime.last_update).tz('Asia/Bangkok').locale('th').format('D MMMM YYYY - H:mm')}</p>
                 {/* For create and update season */}
                 {createSeasonPopupElement}
                 {updateSeasonPopupElement}

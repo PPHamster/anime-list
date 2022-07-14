@@ -28,7 +28,7 @@ const AnimeBox = (props) => {
                     <span className={styles.title}>{'รวม : '}</span>
                     <span>{`${!!anime.all_chapter ? anime.all_chapter : 0} ตอน`}</span>
                 </p>
-                <p className={styles.gray}>{`อัพเดตล่าสุด : ${dayjs(anime.last_update).locale('th').format('D MMM YYYY - H:mm')}`}</p>
+                <p className={styles.gray}>{`อัพเดตล่าสุด : ${dayjs(anime.last_update).tz('Asia/Bangkok').locale('th').format('D MMM YYYY - H:mm')}`}</p>
             </div>
             </a>
         </Link>

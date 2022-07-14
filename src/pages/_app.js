@@ -7,7 +7,6 @@ import timezone from 'dayjs/plugin/timezone';
 /* Config timezone to Thailand time */
 dayjs.extend(utc);
 dayjs.extend(timezone);
-dayjs.tz.setDefault('Asia/Bangkok');
 
 function MyApp({ Component, pageProps }) {
     return <Component {...pageProps} />
