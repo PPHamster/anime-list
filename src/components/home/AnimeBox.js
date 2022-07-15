@@ -12,8 +12,13 @@ const AnimeBox = (props) => {
 
     /* Get main title from title now */
     const title = +titleNow === 0 ? title_jp : +titleNow === 1 ? title_en : title_th;
+
+    const encodeAnimeId = (animeId) => {
+        return new Date(2002, 10, 25).getTime() + animeId;
+    }
+
     return (
-        <Link href={`/content/${anime.id}`}>
+        <Link href={`/content/${encodeAnimeId(anime.id)}`}>
             <a>
             <div className={styles.box}>
                 <p className={styles.row}>

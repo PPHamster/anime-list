@@ -109,7 +109,7 @@ const AnimeId = (props) => {
 
     return (
         <>
-            <Header title={success ? `Anime Id : ${anime.id}` : 'Content Not Found!'} />
+            <Header title={success ? `${anime.title_en}` : 'Content Not Found!'} />
             <div className={styles.screen}>
                 <NavBar />
                 <section className={styles.section}>
@@ -125,7 +125,12 @@ const AnimeId = (props) => {
 }
 
 export async function getServerSideProps(context) {
-    const { animeId } = context.query;
+    const decodeAnimeId = (animeIdCode) => {
+        return Number(animeIdCode) - new Date(2002, 10, 25).getTime();
+    }
+
+    const { animeId: animeIdCode } = context.query;
+    const animeId = decodeAnimeId(animeIdCode);
 
     let arrayAnime = [];
     let arraySeason = [];
