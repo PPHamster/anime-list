@@ -1,6 +1,7 @@
 .navBar {
     background-color: white;
-    border-bottom: 1px solid #CCCCCC;
+    /* border-bottom: 1px solid #CCCCCC; */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -8,21 +9,40 @@
 }
 
 .navBarItem {
+    position: relative;
     display: flex;
     align-items: center;
     padding: 0px 12px;
+}
+
+.navBarItemMobile {
+    width: 100%;
 }
 
 .navBarLogo {
     text-decoration: none;
     display: flex;
     align-items: center;
+    user-select: none;
 }
 
 .navBarImage {
     display: inline-block;
     height: 35px;
     margin-right: 8px;
+}
+
+.navBarProfile {
+    border-radius: 50%;
+    display: inline-block;
+    height: 35px;
+    margin-left: 10px;
+    transition: all 300ms ease-out;
+    cursor: pointer;
+}
+
+.navBarProfile:hover {
+    transform: scale(1.05);
 }
 
 .navBarText {
@@ -56,20 +76,115 @@
     border: 1px solid #017F79;
 }
 
-.settingBox {
+.textButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonIcon {
+    margin-right: 5px;
+}
+
+.spaceLeft {
     margin-left: 10px;
-    
 }
 
-.setting {
-    font-size: 30px;
-    display: inline-block;
-    margin: 0;
+.dropdownMenu {
+    display: none;
+    position: absolute;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 120px;
+    top: 60px;
+    right: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #ffffff;
+    z-index: 1;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.dropdownMenu .item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    padding: 8px;
     cursor: pointer;
-    transition: all 500ms ease-out;
+    transition: all 100ms ease-out;
+    user-select: none;
 }
 
-.setting:hover {
-    transform: rotateZ(180deg);
+.dropdownMenu .item:hover {
+    background-color: #017F79;
+    color: #ffffff;
 }
 
+.iconCircle {
+    display: inline-block;
+    padding: 6px;
+    font-size: 35px;
+    margin-right: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.iconCircle:hover {
+    transform: scale(1.05);
+    background-color: #F0F2F5;
+}
+
+.iconCircleMobile {
+    display: inline-block;
+    padding: 6px;
+    font-size: 35px;
+    border-radius: 50%;
+    background-color: #F0F2F5;
+    cursor: pointer;
+}
+
+.iconCircleMobile:active {
+    background-color: #dfe2e5;
+}
+
+.userList {
+    background-color: #ffffff;
+    height: 50vh;
+    position: absolute;
+    left: 0;
+    top: 46px;
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    z-index: 99;
+    overflow-x: auto;
+}
+
+.userListItem {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #CCCCCC;
+    cursor: pointer;
+    user-select: none;
+}
+
+.userListItem:hover {
+    background-color: #F0F2F5;
+}
+
+.userListImage {
+    display: inline-block;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.show {
+    display: flex;
+}

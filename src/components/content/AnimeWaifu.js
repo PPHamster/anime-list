@@ -25,13 +25,77 @@ const AnimeWaifu = (props) => {
             setImageURL(convertBlobToURL(waifuImage.data));
         }
         /* Must have waifu in this anime then can get image */
-        if(Object.keys(waifu).length !== 0) {
+        if (Object.keys(waifu).length !== 0) {
             getImage();
         }
     }, []);
-    
+
+    /* function delete anime */
+    const deleteWaifu = async () => {
+        /* Wait for user confirmation */
+        const confirm = await Swal.fire({
+            title: `ต้องการลบ ${waifu.name_eng} หรือไม่?`,
+            text: "การลบจะทำให้เธอเสียใจนะ",
+            icon: 'warning',
+            showCancelButton: true,
+            focusCancel: true,
+            confirmButtonColor: '#08AEA4',
+            confirmButtonText: 'ยืนยัน',
+            cancelButtonColor: '#EA6262',
+            cancelButtonText: 'ยกเลิก',
+            reverseButtons: true
+        })
+
+        /* Case confirm */
+        if (confirm.isConfirmed) {
+            Swal.fire({
+                title: 'กรุณารอสักครู่',
+                text: 'กำลังลบข้อมูล',
+                icon: 'info',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                }
+            });
+            /* Call API to delete anime */
+            const response = await fetch(`/api/content/waifu/${waifu.id}?type=delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify({ anime_id: +waifu.anime_id })
+            })
+
+            /* Case success */
+            if (response.status === 200) {
+                Swal.fire({
+                    title: 'ลบ Waifu สำเร็จ',
+                    text: 'ขอให้คนใหม่ดีกว่าเดิมนะ',
+                    icon: 'success',
+                    confirmButtonColor: '#08AEA4',
+                    confirmButtonText: 'ยืนยัน',
+                }).then((result) => {
+                    if (result.isConfirmed || result.isDismissed) {
+                        Router.reload(window.location.pathname);
+                    }
+                })
+            }
+            /* Case error */
+            else if (response.status === 400) {
+                Swal.fire({
+                    title: 'ลบไม่สำเร็จ',
+                    text: 'เกิดปัญหาขึ้น กรุณาลองอีกครั้ง',
+                    icon: 'error',
+                    confirmButtonColor: '#08AEA4',
+                    confirmButtonText: 'เข้าใจแล้ว',
+                })
+            }
+        }
+    }
+
     /* Waifu data from props */
-    const { waifu, animeId } = props;
+    const { waifu, animeId, showButton } = props;
 
     /* Use State for image, create mode and edit mode */
     const [imageURL, setImageURL] = useState(`/images/loading.gif`);
@@ -55,6 +119,34 @@ const AnimeWaifu = (props) => {
     const levelCreateRef = useRef(null);
     const imageCreateRef = useRef(null);
     const descriptionCreateRef = useRef(null);
+
+    /* Button edit and delete can show when this waifu created by current user */
+    let buttonZone = null;
+    let buttonCreate = null;
+    if (showButton) {
+        buttonZone = (
+            <div className={styles.buttonZoneHigh}>
+                <button className={`${styles.button} ${styles.spaceRight}`} onClick={() => { setEditMode(true) }}>
+                    <span className={styles.textButton}>
+                        <MdEdit className={styles.iconButton} />แก้ไขข้อมูล
+                    </span>
+                </button>
+                <button className={`${styles.button} ${styles.red}`} onClick={deleteWaifu}>
+                    <span className={styles.textButton}>
+                        <MdDelete className={styles.iconButton} />ลบ Waifu
+                    </span>
+                </button>
+            </div>
+        );
+
+        buttonCreate = (
+            <button className={styles.button} onClick={() => { setCreateMode(true) }}>
+                <span className={styles.textButton}>
+                    <IoMdPersonAdd className={styles.iconButton} />ลงทะเบียน Waifu
+                </span>
+            </button>
+        );
+    }
 
 
     /* Value in level of your waifu */
@@ -185,76 +277,9 @@ const AnimeWaifu = (props) => {
         return (
             <>
                 <p className={`${styles.title} ${styles.spaceBottom}`}>{`ยังไม่มีข้อมูล`}</p>
-                <button className={styles.button} onClick={() => { setCreateMode(true) }}>
-                    <span className={styles.textButton}>
-                        <IoMdPersonAdd className={styles.iconButton} />ลงทะเบียน Waifu
-                    </span>
-                </button>
+                {buttonCreate}
             </>
         );
-    }
-
-    /* function delete anime */
-    const deleteWaifu = async () => {
-        /* Wait for user confirmation */
-        const confirm = await Swal.fire({
-            title: `ต้องการลบ ${waifu.name_eng} หรือไม่?`,
-            text: "การลบจะทำให้เธอเสียใจนะ",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#08AEA4',
-            confirmButtonText: 'ยืนยัน',
-            cancelButtonColor: '#EA6262',
-            cancelButtonText: 'ยกเลิก',
-            reverseButtons: true
-        })
-
-        /* Case confirm */
-        if (confirm.isConfirmed) {
-            Swal.fire({
-                title: 'กรุณารอสักครู่',
-                text: 'กำลังลบข้อมูล',
-                icon: 'info',
-                allowEscapeKey: false,
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading()
-                }
-            });
-            /* Call API to delete anime */
-            const response = await fetch(`/api/content/waifu/${waifu.id}?type=delete`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify({ anime_id: +waifu.anime_id })
-            })
-
-            /* Case success */
-            if (response.status === 200) {
-                Swal.fire({
-                    title: 'ลบ Waifu สำเร็จ',
-                    text: 'ขอให้คนใหม่ดีกว่าเดิมนะ',
-                    icon: 'success',
-                    confirmButtonColor: '#08AEA4',
-                    confirmButtonText: 'ยืนยัน',
-                }).then((result) => {
-                    if (result.isConfirmed || result.isDismissed) {
-                        Router.reload(window.location.pathname);
-                    }
-                })
-            }
-            /* Case error */
-            else if (response.status === 400) {
-                Swal.fire({
-                    title: 'ลบไม่สำเร็จ',
-                    text: 'เกิดปัญหาขึ้น กรุณาลองอีกครั้ง',
-                    icon: 'error',
-                    confirmButtonColor: '#08AEA4',
-                    confirmButtonText: 'เข้าใจแล้ว',
-                })
-            }
-        }
     }
 
     /* For in edit mode */
@@ -363,7 +388,7 @@ const AnimeWaifu = (props) => {
             </div>
             <div className={styles.imageBox}>
                 <p className={styles.title}>รูปภาพ Waifu : </p>
-                <img className={styles.image} src={imageURL} onClick={() => {setImagePopup(true)}} />
+                <img className={styles.image} alt={waifu.name_eng} src={imageURL} onClick={() => { setImagePopup(true) }} />
             </div>
             <div className={styles.content}>
                 <p className={styles.title}>รายละเอียด : </p>
@@ -374,18 +399,7 @@ const AnimeWaifu = (props) => {
                     <ImagePopup image={imageURL} detail={waifu.name_eng} onBackgroundClick={() => { setImagePopup(false) }} />
                 )
             }
-            <div className={styles.buttonZoneHigh}>
-                <button className={`${styles.button} ${styles.spaceRight}`} onClick={() => { setEditMode(true) }}>
-                    <span className={styles.textButton}>
-                        <MdEdit className={styles.iconButton} />แก้ไขข้อมูล
-                    </span>
-                </button>
-                <button className={`${styles.button} ${styles.red}`} onClick={deleteWaifu}>
-                    <span className={styles.textButton}>
-                        <MdDelete className={styles.iconButton} />ลบ Waifu
-                    </span>
-                </button>
-            </div>
+            {buttonZone}
         </div>
     )
 }

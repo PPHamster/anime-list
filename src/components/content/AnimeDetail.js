@@ -1,6 +1,6 @@
 import styles from '../styles/AnimeDetail.module.css';
 import { useEffect, useState, useRef } from 'react';
-import Router, { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import TextInput from './FormComponent/TextInput';
 import ImageFile from './FormComponent/ImageFile';
@@ -25,27 +25,6 @@ const AnimeDetail = (props) => {
         getImage();
     }, []);
 
-    /* Anime data from props */
-    const { anime } = props;
-
-    /* Use State for image and edit mode */
-    const [imageURL, setImageURL] = useState(`/images/loading.gif`);
-    const [editMode, setEditMode] = useState(false);
-
-    /* useState for image popup */
-    const [imagePopup, setImagePopup] = useState(false);
-
-    /* Use Router */
-    const router = useRouter();
-
-    /* Variable for edit mode (useState, useRef) */
-    const [elertText, setElertText] = useState("");
-    const titleJpRef = useRef(null);
-    const titleEnRef = useRef(null);
-    const titleThRef = useRef(null);
-    const imageRef = useRef(null);
-    const isWatchingRef = useRef(null);
-
     /* function delete anime */
     const deleteAnime = async () => {
         /* Wait for user confirmation */
@@ -54,6 +33,7 @@ const AnimeDetail = (props) => {
             text: "การลบจะไม่สามารถกู้คืนได้",
             icon: 'warning',
             showCancelButton: true,
+            focusCancel: true,
             confirmButtonColor: '#08AEA4',
             confirmButtonText: 'ยืนยัน',
             cancelButtonColor: '#EA6262',
@@ -106,6 +86,46 @@ const AnimeDetail = (props) => {
             }
         }
     }
+
+    /* Anime data from props */
+    const { anime, showButton } = props;
+
+    /* Button edit and delete can show when this anime created by current user */
+    let buttonZone = null;
+    if (showButton) {
+        buttonZone = (
+            <>
+                <button className={`${styles.button} ${styles.spaceRight}`} onClick={() => { setEditMode(true) }}>
+                    <span className={styles.textButton}>
+                        <MdEdit className={styles.iconButton} />แก้ไขข้อมูล
+                    </span>
+                </button>
+                <button className={`${styles.button} ${styles.red}`} onClick={deleteAnime}>
+                    <span className={styles.textButton}>
+                        <MdDelete className={styles.iconButton} />ลบอนิเมะ
+                    </span>
+                </button>
+            </>
+        );
+    }
+
+    /* Use State for image and edit mode */
+    const [imageURL, setImageURL] = useState(`/images/loading.gif`);
+    const [editMode, setEditMode] = useState(false);
+
+    /* useState for image popup */
+    const [imagePopup, setImagePopup] = useState(false);
+
+    /* Use Router */
+    const router = useRouter();
+
+    /* Variable for edit mode (useState, useRef) */
+    const [elertText, setElertText] = useState("");
+    const titleJpRef = useRef(null);
+    const titleEnRef = useRef(null);
+    const titleThRef = useRef(null);
+    const imageRef = useRef(null);
+    const isWatchingRef = useRef(null);
 
     /* For in edit mode */
     if (editMode) {
@@ -211,23 +231,14 @@ const AnimeDetail = (props) => {
             </div>
             <div className={styles.imageBox}>
                 <p className={styles.title}>รูปภาพอนิเมะ : </p>
-                <img className={styles.image} src={imageURL} onClick={() => {setImagePopup(true)}} />
+                <img className={styles.image} alt={anime.title_en} src={imageURL} onClick={() => { setImagePopup(true) }} />
             </div>
             {
                 imagePopup && (
                     <ImagePopup image={imageURL} detail={anime.title_en} onBackgroundClick={() => { setImagePopup(false) }} />
                 )
             }
-            <button className={`${styles.button} ${styles.spaceRight}`} onClick={() => { setEditMode(true) }}>
-                <span className={styles.textButton}>
-                    <MdEdit className={styles.iconButton} />แก้ไขข้อมูล
-                </span>
-            </button>
-            <button className={`${styles.button} ${styles.red}`}>
-                <span className={styles.textButton} onClick={deleteAnime}>
-                    <MdDelete className={styles.iconButton} />ลบอนิเมะ
-                </span>
-            </button>
+            {buttonZone}
         </div>
     );
 }

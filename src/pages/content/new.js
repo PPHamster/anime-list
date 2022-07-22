@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { IoMdAddCircle } from 'react-icons/io'
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
@@ -9,6 +9,7 @@ import SeasonForm from '../../components/content/SeasonForm';
 import WaifuForm from '../../components/content/WaifuForm';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
+import { auth } from '../../services/firebase';
 
 const NewPage = () => {
 
@@ -88,7 +89,8 @@ const NewPage = () => {
                 title_en: title_en.current.value.trim(),
                 title_th: title_th.current.value.trim(),
                 image: await toBase64(animeImage.current.files[0]),
-                is_watching: is_watching.current.checked
+                is_watching: is_watching.current.checked,
+                user_id: auth.currentUser.uid
             },
             season: seasonList,
             waifu: waifuObject,
@@ -154,7 +156,7 @@ const NewPage = () => {
         title_en: useRef(null),
         title_th: useRef(null),
         image: useRef(null),
-        is_watching: useRef(null)
+        is_watching: useRef(null),
     };
 
     const objectSeasonRef = {
@@ -181,6 +183,15 @@ const NewPage = () => {
     const seasonElement = allSeasonRef.map((seasonRef) => {
         return <SeasonForm key={seasonRef.id} id={seasonRef.id} objectRef={objectSeasonRef} setAllSeasonRef={setAllSeasonRef} />;
     });
+
+    useEffect(() => {
+        /* Check if user don't login redirect to home page */
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                router.push('/');
+            }
+        });
+    }, []);
 
     return (
         <>

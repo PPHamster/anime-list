@@ -16,7 +16,7 @@ const ImagePopup = (props) => {
         <div className={styles.imagePopup}>
             <div className={styles.popupBackground} onClick={onBackgroundClick} />
             <div className={styles.popupContent}>
-                <img src={image} />
+                <img src={image} alt={detail} />
                 <h3>{detail}</h3>
             </div>
         </div>

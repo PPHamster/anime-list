@@ -10,7 +10,8 @@ import AnimeWaifu from '../../components/content/AnimeWaifu';
 import { IoMdAddCircle } from 'react-icons/io';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { auth } from '../../services/firebase';
 import UpdateSeason from '../../components/content/UpdateSeason';
 import CreateSeason from '../../components/content/CreateSeason';
 import ScrollTopButton from '../../components/ScrollTopButton';
@@ -22,6 +23,10 @@ const AnimeId = (props) => {
     const seasons = JSON.parse(props.seasons);
     const waifu = JSON.parse(props.waifu);
 
+    /* Set user useState and check current user can show all button */
+    const [user, setUser] = useState(null);
+    const showButton = user && user.uid === anime.user_id;
+
     /* Crerate and Update Season in each anime */
     const [createSeasonPopup, setCreateSeasonPopup] = useState(false);
     const [updateSeasonPopup, setUpdateSeasonPopup] = useState(null);
@@ -31,6 +36,19 @@ const AnimeId = (props) => {
     let seasonContent = null;
     let createSeasonPopupElement = null;
     let updateSeasonPopupElement = null;
+
+    /* Button add can show when this anime created by current user */
+    let buttonAddSeason = null;
+
+    if (showButton) {
+        buttonAddSeason = (
+            <button className={styles.button} onClick={() => { setCreateSeasonPopup(true) }}>
+                <span className={styles.textButton}>
+                    <IoMdAddCircle className={styles.iconButton} />เพิ่ม Season
+                </span>
+            </button>
+        );
+    }
 
     /* Popup create season */
     if (createSeasonPopup) {
@@ -48,7 +66,7 @@ const AnimeId = (props) => {
         let allChapter = 0;
         const allSeasonElement = seasons.map((season) => {
             allChapter += season.chapter_count;
-            return <AnimeSeason key={season.id} season={season} setUpdatePopup={setUpdateSeasonPopup} />;
+            return <AnimeSeason key={season.id} season={season} showButton={showButton} setUpdatePopup={setUpdateSeasonPopup} />;
         });
 
         seasonContent = (
@@ -68,20 +86,16 @@ const AnimeId = (props) => {
             <>
                 {/* Detail in each anime */}
                 <h2 className={styles.title}>ข้อมูลอนิเมะ</h2>
-                <AnimeDetail anime={anime} />
+                <AnimeDetail anime={anime} showButton={showButton} />
                 <hr className={styles.line} />
                 {/* Season in each anime */}
                 <h2 className={styles.title}>Season และตอนทั้งหมด</h2>
                 {seasonContent}
-                <button className={styles.button} onClick={() => { setCreateSeasonPopup(true) }}>
-                    <span className={styles.textButton}>
-                        <IoMdAddCircle className={styles.iconButton} />เพิ่ม Season
-                    </span>
-                </button>
+                {buttonAddSeason}
                 <hr className={styles.line} />
                 {/* Waifu in each anime */}
                 <h2 className={styles.title}>Waifu ประจำเรื่อง</h2>
-                <AnimeWaifu waifu={waifu} animeId={anime.id} />
+                <AnimeWaifu waifu={waifu} animeId={anime.id} showButton={showButton} />
                 <hr className={styles.line} />
                 {/* Created date and last update */}
                 <p><span className={styles.topic}>{`วันที่ลง : `}</span>{dayjs(anime.created_at).tz('Asia/Bangkok').locale('th').format('D MMMM YYYY - H:mm')}</p>
@@ -106,6 +120,12 @@ const AnimeId = (props) => {
             </div>
         )
     }
+
+    useEffect(() => {
+        auth.onAuthStateChanged((user) => {
+            setUser(user);
+        })
+    }, []);
 
     return (
         <>
@@ -138,7 +158,7 @@ export async function getServerSideProps(context) {
 
     try {
         arrayAnime = await db
-            .select('id', 'title_jp', 'title_en', 'title_th', 'created_at', 'last_update', 'is_watching')
+            .select('id', 'title_jp', 'title_en', 'title_th', 'created_at', 'last_update', 'is_watching', 'user_id')
             .from('anime')
             .where('id', '=', +animeId);
 

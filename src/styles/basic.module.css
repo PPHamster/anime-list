@@ -34,6 +34,7 @@
     transition: all 300ms ease-out;
     width: 30vh;
     height: 30vh;
+    user-select: none;
 }
 
 .imageCircle:hover {
@@ -135,4 +136,30 @@
 
 .spaceBottom {
     margin-bottom: 40px;
+}
+
+.loginFirst {
+    font-weight: 600;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.userDetailZone {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.profileImage {
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    user-select: none;
+}
+
+.profileName {
+    margin-left: 20px;
+    font-weight: 600;
+    font-size: 20px;
 }

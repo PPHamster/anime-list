@@ -4,9 +4,6 @@ import Router from 'next/router'
 import { MdDelete, MdEdit } from 'react-icons/md';
 
 const AnimeSeason = (props) => {
-    /* Get data each season and function close popup */
-    const { season, setUpdatePopup } = props;
-
     /* Function delete season */
     const deleteSeason = async () => {
 
@@ -16,6 +13,7 @@ const AnimeSeason = (props) => {
             text: "การลบจะไม่สามารถกู้คืนได้",
             icon: 'warning',
             showCancelButton: true,
+            focusCancel: true,
             confirmButtonColor: '#08AEA4',
             confirmButtonText: 'ยืนยัน',
             cancelButtonColor: '#EA6262',
@@ -62,12 +60,23 @@ const AnimeSeason = (props) => {
         }
     }
 
-    return (
-        <div className={styles.box}>
+    /* Get data each season and function close popup */
+    const { season, showButton, setUpdatePopup } = props;
+
+    /* Button edit and delete can show when this anime created by current user */
+    let buttonZone = null;
+    if (showButton) {
+        buttonZone = (
             <div className={styles.rightBox}>
                 <span className={styles.rightItem} onClick={deleteSeason}><MdDelete /></span>
                 <span className={styles.rightItem} onClick={() => { setUpdatePopup(season) }}><MdEdit /></span>
             </div>
+        );
+    }
+
+    return (
+        <div className={styles.box}>
+            {buttonZone}
             <p className={styles.row}>
                 <span className={styles.title}>{'ชื่อ Season : '}</span>
                 <span>{`${season.title}`}</span>
