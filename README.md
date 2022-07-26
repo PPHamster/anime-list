@@ -1,8 +1,9 @@
 # My Anime List
 
 This repository is my first project in github using
-- next.js
-- mysql
+- Next.js
+- MySQL
+- Firebase - Authentication
 
 All in all this is my first experience.
 

@@ -48,48 +48,63 @@ const AnimeWaifu = (props) => {
 
         /* Case confirm */
         if (confirm.isConfirmed) {
-            Swal.fire({
-                title: 'กรุณารอสักครู่',
-                text: 'กำลังลบข้อมูล',
-                icon: 'info',
-                allowEscapeKey: false,
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading()
-                }
-            });
-            /* Call API to delete anime */
-            const response = await fetch(`/api/content/waifu/${waifu.id}?type=delete`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify({ anime_id: +waifu.anime_id })
+            const confirmAgain = await Swal.fire({
+                title: `ป้องกันความผิดพลาด`,
+                text: "กดยืนยันอีกครั้งเพื่อลบ Waifu คนนี้",
+                icon: 'warning',
+                showCancelButton: true,
+                focusCancel: true,
+                confirmButtonColor: '#08AEA4',
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonColor: '#EA6262',
+                cancelButtonText: 'ยกเลิก',
+                reverseButtons: true
             })
 
-            /* Case success */
-            if (response.status === 200) {
+            if (confirmAgain.isConfirmed) {
                 Swal.fire({
-                    title: 'ลบ Waifu สำเร็จ',
-                    text: 'ขอให้คนใหม่ดีกว่าเดิมนะ',
-                    icon: 'success',
-                    confirmButtonColor: '#08AEA4',
-                    confirmButtonText: 'ยืนยัน',
-                }).then((result) => {
-                    if (result.isConfirmed || result.isDismissed) {
-                        Router.reload(window.location.pathname);
+                    title: 'กรุณารอสักครู่',
+                    text: 'กำลังลบข้อมูล',
+                    icon: 'info',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading()
                     }
+                });
+                /* Call API to delete anime */
+                const response = await fetch(`/api/content/waifu/${waifu.id}?type=delete`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify({ anime_id: +waifu.anime_id })
                 })
-            }
-            /* Case error */
-            else if (response.status === 400) {
-                Swal.fire({
-                    title: 'ลบไม่สำเร็จ',
-                    text: 'เกิดปัญหาขึ้น กรุณาลองอีกครั้ง',
-                    icon: 'error',
-                    confirmButtonColor: '#08AEA4',
-                    confirmButtonText: 'เข้าใจแล้ว',
-                })
+
+                /* Case success */
+                if (response.status === 200) {
+                    Swal.fire({
+                        title: 'ลบ Waifu สำเร็จ',
+                        text: 'ขอให้คนใหม่ดีกว่าเดิมนะ',
+                        icon: 'success',
+                        confirmButtonColor: '#08AEA4',
+                        confirmButtonText: 'ยืนยัน',
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            Router.reload(window.location.pathname);
+                        }
+                    })
+                }
+                /* Case error */
+                else if (response.status === 400) {
+                    Swal.fire({
+                        title: 'ลบไม่สำเร็จ',
+                        text: 'เกิดปัญหาขึ้น กรุณาลองอีกครั้ง',
+                        icon: 'error',
+                        confirmButtonColor: '#08AEA4',
+                        confirmButtonText: 'เข้าใจแล้ว',
+                    })
+                }
             }
         }
     }

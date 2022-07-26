@@ -27,6 +27,7 @@ const AnimeDetail = (props) => {
 
     /* function delete anime */
     const deleteAnime = async () => {
+
         /* Wait for user confirmation */
         const confirm = await Swal.fire({
             title: `ต้องการลบ ${anime.title_en} หรือไม่?`,
@@ -43,46 +44,61 @@ const AnimeDetail = (props) => {
 
         /* Case confirm */
         if (confirm.isConfirmed) {
-            Swal.fire({
-                title: 'กรุณารอสักครู่',
-                text: 'กำลังลบข้อมูล',
-                icon: 'info',
-                allowEscapeKey: false,
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading()
-                }
-            });
-            /* Call API to delete anime */
-            const response = await fetch(`/api/content/anime/${anime.id}?type=delete`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify({ anime_id: +anime.id })
+            const confirmAgain = await Swal.fire({
+                title: `ป้องกันความผิดพลาด`,
+                text: "กดยืนยันอีกครั้งเพื่อลบอนิเมะนี้",
+                icon: 'warning',
+                showCancelButton: true,
+                focusCancel: true,
+                confirmButtonColor: '#08AEA4',
+                confirmButtonText: 'ยืนยัน',
+                cancelButtonColor: '#EA6262',
+                cancelButtonText: 'ยกเลิก',
+                reverseButtons: true
             })
 
-            /* Case success */
-            if (response.status === 200) {
+            if (confirmAgain.isConfirmed) {
                 Swal.fire({
-                    title: 'ลบอนิเมะสำเร็จ',
-                    text: 'กดปุ่มเพื่อกลับสู่หน้าหลัก',
-                    icon: 'success',
-                    confirmButtonColor: '#08AEA4',
-                    confirmButtonText: 'ยืนยัน',
-                }).then((result) => {
-                    if (result.isConfirmed || result.isDismissed) router.push('/');
+                    title: 'กรุณารอสักครู่',
+                    text: 'กำลังลบข้อมูล',
+                    icon: 'info',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+                /* Call API to delete anime */
+                const response = await fetch(`/api/content/anime/${anime.id}?type=delete`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify({ anime_id: +anime.id })
                 })
-            }
-            /* Case error */
-            else if (response.status === 400) {
-                Swal.fire({
-                    title: 'ลบไม่สำเร็จ',
-                    text: 'เกิดปัญหาขึ้น กรุณาลองอีกครั้ง',
-                    icon: 'error',
-                    confirmButtonColor: '#08AEA4',
-                    confirmButtonText: 'เข้าใจแล้ว',
-                })
+
+                /* Case success */
+                if (response.status === 200) {
+                    Swal.fire({
+                        title: 'ลบอนิเมะสำเร็จ',
+                        text: 'กดปุ่มเพื่อกลับสู่หน้าหลัก',
+                        icon: 'success',
+                        confirmButtonColor: '#08AEA4',
+                        confirmButtonText: 'ยืนยัน',
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) router.push('/');
+                    })
+                }
+                /* Case error */
+                else if (response.status === 400) {
+                    Swal.fire({
+                        title: 'ลบไม่สำเร็จ',
+                        text: 'เกิดปัญหาขึ้น กรุณาลองอีกครั้ง',
+                        icon: 'error',
+                        confirmButtonColor: '#08AEA4',
+                        confirmButtonText: 'เข้าใจแล้ว',
+                    })
+                }
             }
         }
     }
